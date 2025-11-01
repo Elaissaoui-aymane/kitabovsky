@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "123872392461",
+    "project_id": "kitabovsky-app-1942",
+    "storage_bucket": "kitabovsky-app-1942.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:123872392461:android:20d58d689785cab667ec44",
+        "android_client_info": {
+          "package_name": "com.example.kitabovski"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAexvCsFHQFvo0aW_HvL9CjBQSA_nZNruI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
