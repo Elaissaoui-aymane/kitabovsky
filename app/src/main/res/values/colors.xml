@@ -2,4 +2,32 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#F10F0F</color>
+    <color name="green">#4CAF50</color>
+    <color name="blue">#03A9F4</color>
+
+    <!-- Primary Palette -->
+    <color name="colorPrimary">@color/baj4</color> <!-- Dark Slate -->
+    <color name="colorPrimaryVariant">@color/baj3</color> <!-- Grey/Brown -->
+    <color name="colorOnPrimary">@color/baj1</color> <!-- Light Cream -->
+
+    <color name="colorSecondary">@color/baj5</color> <!-- Accent Brown -->
+    <color name="colorSecondaryVariant">@color/baj2</color> <!-- Mid Cream -->
+    <color name="colorOnSecondary">@color/black</color>
+
+    <color name="colorBackground">@color/baj1</color> <!-- Light Cream for backgrounds -->
+    <color name="colorOnBackground">@color/baj4</color> <!-- Dark Slate for text -->
+    <color name="colorSurface">@color/white</color>
+    <color name="colorOnSurface">@color/baj4</color>
+
+    <!-- App Specific Colors -->
+    <color name="transparent">#eee</color>
+    <color name="baj1">#EFE9DB</color>
+    <color name="baj4">#354449</color>
+    <color name="baj2">#CFC1AB</color>
+    <color name="baj3">#6A6B65</color>
+    <color name="baj5">#A89985</color>
+    <color name="opacity">#A7A89985</color>
+    <color name="opacity_log">#C46A6B65</color>
 </resources>
+

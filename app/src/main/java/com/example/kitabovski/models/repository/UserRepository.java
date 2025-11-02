@@ -7,41 +7,62 @@ import com.example.kitabovski.models.database.AppDatabase;
 import com.example.kitabovski.models.database.UserDao;
 import com.example.kitabovski.models.entities.User;
 import com.example.kitabovski.models.firebase.FirebaseHelper;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class UserRepository {
 
     private final UserDao userDao;
-    private final DatabaseReference firebaseUserRef;
     private final ExecutorService executorService;
 
     public UserRepository(Application application) {
         AppDatabase db = AppDatabase.getDatabase(application);
         this.userDao = db.userDao();
-        this.firebaseUserRef = FirebaseHelper.getUsersReference();
         this.executorService = Executors.newSingleThreadExecutor();
     }
 
-    // Fetches a user from the local database
     public LiveData<User> getUser(String userId) {
-        // Refresh the local user data from Firebase
         refreshUser(userId);
         return userDao.getUserById(userId);
     }
 
-    // Creates or updates a user in Firebase
     public void createUser(User user) {
-        firebaseUserRef.child(user.getUid()).setValue(user);
+        FirebaseHelper.getUserReference(user.getUid()).setValue(user);
     }
 
-    // Fetches the latest user data from Firebase and updates the local Room database
+    public Task<Void> updateUserProfile(String userId, String name, String bio) {
+        Map<String, Object> updates = new HashMap<>();
+        updates.put("name", name);
+        updates.put("bio", bio);
+        return FirebaseHelper.getUserReference(userId).updateChildren(updates);
+    }
+
+    public void followUser(String currentUserId, String targetUserId) {
+        // Add target to current user's "following" list
+        FirebaseHelper.getFollowingReference(currentUserId).child(targetUserId).setValue(true);
+        // Add current user to target's "followers" list
+        FirebaseHelper.getFollowersReference(targetUserId).child(currentUserId).setValue(true);
+    }
+
+    public void unfollowUser(String currentUserId, String targetUserId) {
+        // Remove target from current user's "following" list
+        FirebaseHelper.getFollowingReference(currentUserId).child(targetUserId).removeValue();
+        // Remove current user from target's "followers" list
+        FirebaseHelper.getFollowersReference(targetUserId).child(currentUserId).removeValue();
+    }
+
+    // You would also add LiveData methods to observe followers/following counts and lists
+
     private void refreshUser(final String userId) {
-        firebaseUserRef.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+        DatabaseReference userRef = FirebaseHelper.getUserReference(userId);
+        userRef.addValueEventListener(new ValueEventListener() { // Use addValueEventListener for real-time updates
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 User user = dataSnapshot.getValue(User.class);
@@ -52,7 +73,7 @@ public class UserRepository {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-                // Log the error
+                // Log error
             }
         });
     }

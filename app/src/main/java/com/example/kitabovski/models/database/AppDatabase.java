@@ -1,20 +1,25 @@
 package com.example.kitabovski.models.database;
 
 import android.content.Context;
+
+import androidx.databinding.adapters.Converters;
 import androidx.room.Database;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
-import androidx.room.TypeConverters; // We will add this later if needed for complex types like List<String>
+import androidx.room.TypeConverters;
 import com.example.kitabovski.models.entities.Book;
+import com.example.kitabovski.models.entities.Post;
+import com.example.kitabovski.models.entities.Review;
 import com.example.kitabovski.models.entities.User;
-import com.example.kitabovski.models.entities.Order;
 
-@Database(entities = {Book.class, User.class, Order.class}, version = 1, exportSchema = false)
+@Database(entities = {User.class, Book.class, Review.class, Post.class}, version = 2, exportSchema = false)
+@TypeConverters({Converters.class}) // We'll add this for the enums
 public abstract class AppDatabase extends RoomDatabase {
 
-    public abstract BookDao bookDao();
     public abstract UserDao userDao();
-    // public abstract OrderDao orderDao(); // Add this when you create OrderDao
+    public abstract BookDao bookDao();
+    public abstract ReviewDao reviewDao();
+    public abstract PostDao postDao();
 
     private static volatile AppDatabase INSTANCE;
 
@@ -24,7 +29,7 @@ public abstract class AppDatabase extends RoomDatabase {
                 if (INSTANCE == null) {
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                                     AppDatabase.class, "kitabovski_database")
-                            .fallbackToDestructiveMigration() // Not for production, for dev only
+                            .fallbackToDestructiveMigration() // Use this for dev, plan migrations for prod
                             .build();
                 }
             }

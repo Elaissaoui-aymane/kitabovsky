@@ -1,5 +1,7 @@
+
 plugins {
     alias(libs.plugins.android.application)
+
 }
 
 android {
@@ -14,6 +16,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+    }
+    buildFeatures {
+        viewBinding= true // Enable View Binding for easier UI access
     }
 
     buildTypes {
@@ -42,7 +47,32 @@ dependencies {
     implementation(libs.firebase.auth)
     implementation(libs.firebase.database)
     implementation(libs.firebase.storage)
+    implementation(libs.firebase.messaging)
+    implementation(libs.adapters)
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
+    // AndroidX & UI Components
+    implementation (libs.swiperefreshlayout)
+    // Lifecycle, ViewModel, LiveData (for Controllers)
+    implementation (libs.lifecycle.viewmodel)
+    implementation (libs.lifecycle.livedata)
+    implementation (libs.lifecycle.common.java8)
+    annotationProcessor ("androidx.room:room-compiler:")
+    // Image Loading - Glide
+    implementation (libs.glide)
+    annotationProcessor (libs.compiler)
+    // Circle ImageView (for professional profile pictures)
+    implementation (libs.circleimageview)
+    // WorkManager for background tasks (BookDownloader)
+    implementation (libs.work.runtime)
+    // Testing
+    testImplementation (libs.junit)
+    androidTestImplementation (libs.junit.v115)
+    androidTestImplementation (libs.espresso.core.v351)
+
+}
+
+infix fun Any.platform(s: String) {
+
 }

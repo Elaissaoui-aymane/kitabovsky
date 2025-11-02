@@ -14,18 +14,12 @@ public interface BookDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insertAll(List<Book> books);
 
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    void insertBook(Book book);
-
-    @Query("SELECT * FROM books ORDER BY timestamp DESC")
-    LiveData<List<Book>> getAllBooks();
+    @Query("SELECT * FROM books WHERE status = 'APPROVED' ORDER BY timestamp DESC")
+    LiveData<List<Book>> getAllApprovedBooks();
 
     @Query("SELECT * FROM books WHERE id = :bookId")
     LiveData<Book> getBookById(String bookId);
 
-    @Query("SELECT * FROM books WHERE ownerId = :userId ORDER BY timestamp DESC")
-    LiveData<List<Book>> getBooksByOwner(String userId);
-
-    @Query("DELETE FROM books")
-    void deleteAllBooks();
+    @Query("SELECT * FROM books WHERE status = 'PENDING' ORDER BY timestamp ASC")
+    LiveData<List<Book>> getPendingBooks();
 }
